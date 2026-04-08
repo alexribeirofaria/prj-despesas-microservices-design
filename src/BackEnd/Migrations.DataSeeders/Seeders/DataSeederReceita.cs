@@ -1,15 +1,16 @@
 ﻿using Infrastructure.DatabaseContexts;
 using Domain.Entities;
 using Migrations.DataSeeders.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Migrations.DataSeeders.Seeders;
 
 public class DataSeederReceita : ISeeder
 {
-    private readonly RegisterContext _context;
+    private readonly BaseContext<DbContext> _context;
     private readonly Random _random = new();
 
-    public DataSeederReceita(RegisterContext context)
+    public DataSeederReceita(BaseContext<DbContext>  context)
     {
         _context = context;
     }

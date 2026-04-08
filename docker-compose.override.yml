@@ -1,7 +1,7 @@
 ﻿services:
   api-gateway:
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:4000
       ASPNETCORE_HTTP_PORTS: 4000
     ports:
@@ -11,8 +11,8 @@
       dockerfile: ./src/api-gateway/Dockerfile
     image: ${DOCKER_REGISTRY-}api-gateway  
     volumes:
-      - ${LOCALAPPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${LOCALAPPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
       - gateway-net
     deploy:
@@ -23,15 +23,16 @@
           memory: 128M 
 
   categoria-service:
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
+    environment:      
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 9001
+      ASPNETCORE_HTTPS_PORTS: 7001
     volumes:
-      - ${LOCALAPPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${LOCALAPPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
       - gateway-net
     mac_address: 02:42:ac:11:00:02
-
     deploy:
       resources:
         limits:
@@ -41,10 +42,10 @@
 
   despesa-service:
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
     volumes:
-      - ${LOCALAPPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${LOCALAPPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
       - gateway-net
     mac_address: 02:42:ac:11:00:03
@@ -57,10 +58,10 @@
 
   receita-service:
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_ENVIRONMENT: Development
     volumes:
-      - ${LOCALAPPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${LOCALAPPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
       - gateway-net
     mac_address: 02:42:ac:11:00:04
@@ -70,6 +71,27 @@
           memory: 256M  
         reservations:
           memory: 128M 
+
+  app-sts:
+    image: ${DOCKER_REGISTRY-}sts
+    build:
+      context: .
+      dockerfile: src/IdentityServer/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_HTTPS_PORTS: 8081
+    networks:
+        - gateway-net    
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro    
+    deploy:
+      resources:
+        limits:
+          memory: 256M  
+        reservations:
+          memory: 128M
 
 
   consul:

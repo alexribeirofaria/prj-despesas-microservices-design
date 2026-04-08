@@ -19,7 +19,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpGet]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
@@ -30,7 +30,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpGet("GetById/{idCategoria}")]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
@@ -41,7 +41,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
@@ -52,7 +52,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpPost]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401)]
@@ -68,7 +68,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpPut]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401)]
@@ -85,7 +85,7 @@ public class CategoriaController : UnitControllerBase
     }
 
     [HttpDelete("{idCategoria}")]
-    //[Authorize("Bearer", Roles = "User, Admin")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401)]

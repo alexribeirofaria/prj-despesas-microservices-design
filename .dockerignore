@@ -52,5 +52,6 @@ despesas-frontend-angular.code-workspace
 **/app-ios*
 **/cetificate*
 *.sh
+*.conf.sh
 *.ps1
 **/Migrations*

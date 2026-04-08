@@ -1,14 +1,15 @@
 ﻿using Infrastructure.DatabaseContexts;
 using Domain.Entities;
 using Migrations.DataSeeders.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Migrations.DataSeeders.Updaters;
 public class DataSeederUpdateDespesa : IUpdater
 {
-    private readonly RegisterContext _context;
+    private readonly BaseContext<DbContext> _context;
     private readonly Random _random = new Random();
 
-    public DataSeederUpdateDespesa(RegisterContext context)
+    public DataSeederUpdateDespesa(BaseContext<DbContext>  context)
     {
         _context = context;
     }

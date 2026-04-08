@@ -1,4 +1,6 @@
-using api_gateway.Configuration;
+ï»¿using api_gateway.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
@@ -12,7 +14,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.ListenAnyIP(9000);
 });
 
-// Carregar arquivos de configuração
+// Carregar arquivos de configuraÃ§Ã£o
 var env = builder.Environment;
 builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
@@ -25,7 +27,16 @@ builder.Configuration
 builder.Services
     .AddOcelot(builder.Configuration)
     .AddConsul<ConsulServiceBuilder>();
-    //.AddTransientDefinedAggregator<BookDetailsAggregator>();
+//.AddTransientDefinedAggregator<BookDetailsAggregator>();
+
+builder.Services.AddControllers();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://internal:7199";  // URL do seu IdentityServer
+        options.Audience = "api-gateway";
+        options.RequireHttpsMetadata = false;  // Altere conforme sua necessidade
+    });
 
 var app = builder.Build();
 
@@ -33,7 +44,10 @@ if (env.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-// Configurar Ocelot
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseMiddleware<TokenMiddleware>(); 
 app.UseOcelot().Wait();
 
 app.Run();

@@ -1,5 +1,5 @@
 using EasyCryptoSalt;
-using LiteStreaming.STS;
+using STS.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using STS.Server.Autorization;
@@ -13,7 +13,7 @@ using STS.ServerSwaggerUIDocumentation;
 // Appliction Parameteres
 var appName = "Security Token Service";
 var currentVersion = "v1";
-var appDescription = $"Este � um componente de Servi�os de Token de Seguran�a para autenticar e autorizar acesso a servi�os. ";
+var appDescription = $"Este é um componente de Serviços de Token de Segurança para autenticar e autorizar acesso a serviços. ";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(c =>
@@ -81,7 +81,8 @@ builder.Services
     .AddInMemoryApiScopes(IdentityServerConfigurations.GetApiScopes())
     .AddInMemoryClients(IdentityServerConfigurations.GetClients())
     .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
-    .AddProfileService<ProfileService>();
+    .AddProfileService<ProfileService>()
+    .AddDeveloperSigningCredential();
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();

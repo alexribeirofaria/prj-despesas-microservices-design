@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/.certs/">
+    <File Path=".certs/gen-cert.sh" />
+    <File Path=".certs/oem.cnf" />
+  </Folder>
   <Folder Name="/FrontEnd/">
     <Project Path="src/FrontEnd/AngularApp.esproj">
       <Build />
@@ -9,7 +13,7 @@
     <Project Path="src/api-gateway/api-gateway.csproj" Id="4ef2b0b5-d0d1-4abd-8078-6c12ef4e37ae" />
   </Folder>
   <Folder Name="/IdentityServer/">
-    <Project Path="src/IdentityServer/STS.Server.csproj" />
+    <Project Path="src/IdentityServer/sts-server.csproj" />
   </Folder>
   <Folder Name="/Services/">
     <Project Path="src/BackEnd/Services/AuthService/AuthService.csproj" />
@@ -27,6 +31,4 @@
   <Project Path="src/BackEnd/Infrastructure/Infrastructure.csproj" />
   <Project Path="src/BackEnd/Migrations.DataSeeders/Migrations.DataSeeders.csproj" />
   <Project Path="src/BackEnd/Migrations.MySqlServer/Migrations.MySqlServer.csproj" />
-  <Project Path="src/BackEnd/Repository.Mapping/Repository.Mapping.csproj" />
-  <Project Path="src/BackEnd/Repository/Repository.csproj" />
 </Solution>

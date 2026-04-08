@@ -11,7 +11,7 @@
     }
   },
   "DownstreamScheme": "http",
-  "Routes": [
+  "ReRoutes": [
     {
       "ServiceName": "categoria-service",
       "DownstreamPathTemplate": "/api/categoria",

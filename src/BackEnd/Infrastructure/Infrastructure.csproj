@@ -13,6 +13,7 @@
 		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,6 +24,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Domain\Domain.csproj" />
-		<ProjectReference Include="..\Repository.Mapping\Repository.Mapping.csproj" />
+		<PackageReference Include="EasyCryptoSalt" Version="1.0.4" />
 	</ItemGroup>
 </Project>

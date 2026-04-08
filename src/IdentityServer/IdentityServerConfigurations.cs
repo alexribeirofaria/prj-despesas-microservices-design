@@ -2,18 +2,16 @@
 using IdentityServer4.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace LiteStreaming.STS;
+namespace STS.Server;
 
 internal class IdentityServerConfigurations
 {
-    const string API_RESOURCE_NAME = "lite-streaming-api-resource";
-    const string DISPLAY_API_RESOURCE_NAME = "LiteStreamingResource";
     static readonly string[] USER_CLAIMS = { "openid", "profile", "email", "userid", "role" };
-    const string SCOPE_NAME = "lite-streaming-scope";
-    const string DISPLAY_NAME_SCOPE = "LiteStreamingScope";
-    const string SECRET = "lite-streaming-secret";
-    const string CLIENT_ID = "client-angular-lite-streaming";
-    const string CLIENT_NAME = "Frontend Angular Application Lite Streaming";
+    const string SCOPE_NAME = "sts-scope";
+    const string DISPLAY_NAME_SCOPE = "STS.Server.Scope";
+    const string SECRET = "sts-secret";
+    const string CLIENT_ID = "client-microservices";
+    const string CLIENT_NAME = "Microservices Applications";
 
     public static IEnumerable<IdentityResource> GetIdentityResource()
     {
@@ -25,17 +23,18 @@ internal class IdentityServerConfigurations
         };
     }
 
-    public static IEnumerable<ApiResource> GetApiResources() 
+    public static IEnumerable<ApiResource> GetApiResources()
     {
         return new List<ApiResource>()
         {
-            new ApiResource(API_RESOURCE_NAME , DISPLAY_API_RESOURCE_NAME, USER_CLAIMS )
+            // Configura o recurso da API com o Audience correto
+            new ApiResource("api-gateway", "API Gateway", USER_CLAIMS)  // Altere o nome da API para 'api-gateway'
             {
                 ApiSecrets =
                 {
-                    new Secret(SECRET.Sha256())
+                    new Secret("sts-secret-api-gateway".Sha256())  // Altere o segredo para 'api-gateway'
                 },
-                Scopes = { "lite-streaming-scope" },
+                Scopes = { "sts-scope" },  // Escopos que a API irá utilizar
                 AllowedAccessTokenSigningAlgorithms = { SecurityAlgorithms.RsaSha256 }
             }
         };
@@ -54,7 +53,7 @@ internal class IdentityServerConfigurations
         ];
     }
 
-    
+
     public static IEnumerable<Client> GetClients()
     {
         return
@@ -73,10 +72,10 @@ internal class IdentityServerConfigurations
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
-                    IdentityServerConstants.AccessTokenAudience,                    
+                    IdentityServerConstants.AccessTokenAudience,
                     SCOPE_NAME
                 },
-                RedirectUris = { "http://localhost:5055/signin-oidc", "https://localhost:7199/signin-oidc" },
+                RedirectUris = { "http://internal:5055/signin-oidc", "https://internal:7199/signin-oidc" },
                 RefreshTokenExpiration = TokenExpiration.Sliding,
                 RefreshTokenUsage = TokenUsage.OneTimeOnly,
                 AlwaysIncludeUserClaimsInIdToken = true,

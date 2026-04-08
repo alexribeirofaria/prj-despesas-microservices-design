@@ -2,15 +2,16 @@
 using Domain.Entities;
 using EasyCryptoSalt;
 using Migrations.DataSeeders.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Migrations.DataSeeders.Seeders;
 
 public class DataSeederAcesso : ISeeder
 {
     private readonly ICrypto _crypto;
-    private readonly RegisterContext _context;
+    private readonly BaseContext<DbContext> _context;
 
-    public DataSeederAcesso(RegisterContext context, ICrypto crypto)
+    public DataSeederAcesso(BaseContext<DbContext>  context, ICrypto crypto)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _crypto = crypto ?? throw new ArgumentNullException(nameof(crypto));

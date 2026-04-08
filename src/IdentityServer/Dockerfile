@@ -1,25 +1,16 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM  mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 5055
 EXPOSE 7199
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["LiteStreaming.STS/STS.Servercsproj", "LiteStreaming.STS/"]
-RUN dotnet restore "./LiteStreaming.STS/STS.Servercsproj"
-COPY . .
-WORKDIR "/src/LiteStreaming.STS"
-RUN dotnet build "./STS.Servercsproj" -c $BUILD_CONFIGURATION -o /app/build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build 
+WORKDIR /src/
+COPY ./src/IdentityServer .
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./STS.Servercsproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./sts-server.csproj" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "STS.Serverdll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "sts-server.dll"]

@@ -12,7 +12,7 @@ using Repository.CommonDependenceInject;
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.ConfigureMySqlServerContext(context.Configuration);
+        services.ConfigureRegisterSqlContext(context.Configuration);
 
         string environment = context.Configuration["Environment"] ?? "Production";
         Console.WriteLine($"Environment: {environment}");

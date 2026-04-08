@@ -1,8 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Dtos;
 using Application.Implementations;
-using AuthService.RegistersExtensions;
-using AuthService.Settings;
+using AuthService.Register;
 using Domain.Entities;
 using Infrastructure.CommonInjectDependence;
 using Repository.Persistency.Generic;
@@ -23,9 +22,8 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.ListenAnyIP(9002);
 });
 
-var serviceSettings = builder.Configuration.GetSection("ServiceSettings").Get<ServiceSettings>();
-builder.Services.StartupBootstrap(builder.Configuration);
-builder.Services.AddConsulSettings(serviceSettings);
+builder.Services.AddConsulSettings(builder.Configuration);
+builder.Services.AddIdentityServerSettings(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped(typeof(IBusinessBase<DespesaDto, Despesa>), typeof(DespesaBusinessImpl<DespesaDto>));
@@ -33,11 +31,11 @@ builder.Services.AddAutoMapper(typeof(DespesaProfile).Assembly);
 builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 builder.Services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
 builder.Services.AddOptions();
-builder.Services.ConfigureMySqlServerContext(builder.Configuration);
+builder.Services.ConfigureRegisterSqlContext(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseConsul(serviceSettings); 
+app.UseConsul(); 
 app.UseRouting();
 app.MapControllers();
 app.Run();

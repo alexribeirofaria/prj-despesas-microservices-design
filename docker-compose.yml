@@ -1,14 +1,14 @@
 ﻿services:
   api-gateway:
     container_name: api-gateway
-    image: ${DOCKER_REGISTRY-}api-gateway
+    image: alexfariakof/api-gateway:latest
     build:
       context: .
       dockerfile: ./src/api-gateway/Dockerfile
     environment:
-      - CONSUL_HOST=consul
-      - SERVICE_DISCOVERY_URL=http://consul:8500
-      - ASPNETCORE_ENVIRONMENT=Production
+      ASPNETCORE_ENVIRONMENT: Production
+      CONSUL_HOST: consul
+      SERVICE_DISCOVERY_URL: http://consul:8500      
     ports:
       - 4000:9000
     networks:
@@ -17,7 +17,7 @@
   categoria-service:
     container_name: categoria-service
     hostname: categoria-service
-    image: alexfariakof:categoria-service
+    image: alexfariakof/categoria-service:latest
     build:
       context: .
       dockerfile: ./src/BackEnd/Services/CategoriaService/Dockerfile
@@ -27,7 +27,7 @@
   despesa-service:
     container_name: despesa-service
     hostname: despesa-service
-    image: ${DOCKER_REGISTRY-}despesa-service
+    image: alexfariakof/despesa-service:latest
     build:
       context: .
       dockerfile: ./src/BackEnd/Services/DespesaService/Dockerfile
@@ -37,7 +37,7 @@
   receita-service:
     container_name: receita-service
     hostname: receita-service
-    image: ${DOCKER_REGISTRY-}receita-service
+    image: alexfariakof/receita-service:latest
     build:
       context: .
       dockerfile: ./src/BackEnd/Services/ReceitaService/Dockerfile
